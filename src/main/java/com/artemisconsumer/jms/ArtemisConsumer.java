@@ -37,21 +37,22 @@ public class ArtemisConsumer {
             LOGGER.info("Création d'une connexion au broker.");
             Connection connection = this.connectionBrokerConfig.connectionBroker();
 
-            LOGGER.info("Création d'une session");
-            Session session = connection.createSession(Session.SESSION_TRANSACTED);
+            if (connection != null) {
+                LOGGER.info("Création d'une session");
+                Session session = connection.createSession(Session.SESSION_TRANSACTED);
 
-            LOGGER.info("Création d'une destination (Topic ou Queue)");
-            Topic destination = session.createTopic(this.semlex);
+                LOGGER.info("Création d'une destination (Topic ou Queue)");
+                Topic destination = session.createTopic(this.semlex);
 
-            LOGGER.info("Création d'un consumer");
-            MessageConsumer consumer = session.createConsumer(destination);
+                LOGGER.info("Création d'un consumer");
+                MessageConsumer consumer = session.createConsumer(destination);
 
-            LOGGER.info("Démarrage de la connexion");
-            connection.start();
+                LOGGER.info("Démarrage de la connexion");
+                connection.start();
 
-            LOGGER.info("Création du listener");
-            consumer.setMessageListener(new MulticastMessageConsumer(session, this.ack));
-
+                LOGGER.info("Création du listener");
+                consumer.setMessageListener(new MulticastMessageConsumer(session, this.ack));
+            }
         } catch (JMSException e) {
             LOGGER.error(e.getErrorCode() + ": " + e.getMessage());
         }
