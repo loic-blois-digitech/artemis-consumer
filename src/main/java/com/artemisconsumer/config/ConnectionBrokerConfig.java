@@ -57,8 +57,9 @@ public class ConnectionBrokerConfig {
 
         } catch (JMSException e) {
             LOGGER.error(e.getErrorCode() + ": " + e.getMessage());
-        }
+            return null;
 
+        }
         LOGGER.info("Connexion au broker réussie.");
         return connection;
     }
